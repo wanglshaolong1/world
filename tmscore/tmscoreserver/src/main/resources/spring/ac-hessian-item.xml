@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="byName">
+
+	<bean id="skuService" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="purchaseadmin" />
+		<property name="servers">
+			<list>
+				<value>${ITEM_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="skuService" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.itemcenter.client.itemsku.SkuService" />
+	</bean>
+
+	<bean id="valueService" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="purchaseadmin" />
+		<property name="servers">
+			<list>
+				<value>${ITEM_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="valueservice" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.itemcenter.client.value.ValueService" />
+	</bean>
+
+</beans>

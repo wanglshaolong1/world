@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="DeliverDO" type="com.xianzaishi.wms.tmscore.vo.DeliverVO" />
+	<typeAlias alias="DeliverQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.DeliverQueryVO" />
+
+	<sql id="DeliverDO.allColumn">
+		id ,agency_id ,area_id ,operator ,statu ,create_time
+		,finish_time ,dr
+		,ts
+	</sql>
+
+	<resultMap class="DeliverDO" id="DeliverResult">
+		<result property="id" column="id" />
+		<result property="agencyId" column="agency_id" />
+		<result property="areaId" column="area_id" />
+		<result property="operator" column="operator" />
+		<result property="statu" column="statu" />
+		<result property="createTime" column="create_time" />
+		<result property="finishTime" column="finish_time" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="DeliverDO.add" parameterClass="DeliverDO">
+		insert into
+		t_tms_deliver(
+		agency_id , area_id , operator , statu ,
+		create_time , finish_time , dr,ts
+		)values(
+		#agencyId# , #areaId# ,
+		#operator# , #statu# , Now() ,
+		#finishTime# , 0,Now())
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="DeliverDO.update" parameterClass="DeliverDO">
+		update
+		t_tms_deliver
+		set
+		<dynamic prepend=" ">
+			<isNotNull prepend=" , " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" , " property="areaId"> area_id = #areaId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="operator"> operator =
+				#operator#
+			</isNotNull>
+			<isNotNull prepend=" , " property="createTime"> create_time =
+				#createTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="finishTime">finish_time =
+				#finishTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="dr"> dr = #dr#</isNotNull>
+		</dynamic>
+		,ts = Now()
+		where id = #id# and dr = 0
+	</update>
+
+	<update id="DeliverDO.assign" parameterClass="DeliverDO">
+		update
+		t_tms_deliver
+		set
+		operator = #operator# , statu = #statu# where id =
+		#id# and ts = #ts# and dr = 0
+	</update>
+
+	<select id="DeliverDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="DeliverResult">
+		select
+		<include refid="DeliverDO.allColumn" />
+		from t_tms_deliver
+		where id=#id#
+	</select>
+
+	<sql id="DeliverDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="areaId"> area_id = #areaId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="operator"> operator = #operator#
+			</isNotNull>
+			<isNotNull prepend=" and " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" and " property="createTime"> create_time =
+				#createTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="finishTime"> finish_time =
+				#finishTime#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="DeliverDO.query" parameterClass="DeliverQueryVO"
+		resultMap="DeliverResult">
+		select
+		<include refid="DeliverDO.allColumn" />
+		from t_tms_deliver
+		<include refid="DeliverDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="DeliverDO.queryCount" parameterClass="DeliverQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_deliver
+		<include refid="DeliverDO.queryCondition" />
+	</select>
+
+	<delete id="DeliverDO.delete" parameterClass="DeliverDO">delete from
+		t_tms_deliver where id=#id#
+	</delete>
+
+	<delete id="DeliverDO.deleteByID" parameterClass="java.lang.Long">delete from
+		t_tms_deliver where id=#id#
+	</delete>
+
+	<update id="DeliverDO.del" parameterClass="DeliverDO">update
+		t_tms_deliver
+		set dr = 1 where id=#id#
+	</update>
+
+	<update id="DeliverDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_deliver set dr = 1 where id=#id#
+	</update>
+</sqlMap>

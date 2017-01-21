@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="DeliveryAreaDO" type="com.xianzaishi.wms.tmscore.vo.DeliveryAreaVO" />
+	<typeAlias alias="DeliveryAreaQueryVO" type="com.xianzaishi.wms.tmscore.vo.DeliveryAreaQueryVO" />
+
+	<sql id="DeliveryAreaDO.allColumn">
+				id ,deiliverier_id ,area_id ,dr ,ts 	</sql>
+
+	<resultMap class="DeliveryAreaDO" id="DeliveryAreaResult">
+		 <result property="id" column="id" />
+ <result property="deiliverierId" column="deiliverier_id" />
+ <result property="areaId" column="area_id" />
+ <result property="dr" column="dr" />
+ <result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="DeliveryAreaDO.add" parameterClass="DeliveryAreaDO">
+		insert into
+		t_tms_deliverier_area(
+				deiliverier_id , area_id , dr , ts  		)values(
+				 #deiliverierId# ,  #areaId# ,  0 ,  #ts#  		)
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="DeliveryAreaDO.update" parameterClass="DeliveryAreaDO">
+		update
+		t_tms_deliverier_area
+		set
+				deiliverier_id =  #deiliverierId# , area_id =  #areaId# , ts =  #ts#  		where id = #id#
+	</update>
+
+	<select id="DeliveryAreaDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="DeliveryAreaResult">
+		select
+		<include refid="DeliveryAreaDO.allColumn" />
+		from t_tms_deliverier_area
+		where id=#id#
+	</select>
+
+	<sql id="DeliveryAreaDO.queryCondition">
+		<dynamic prepend="where">
+							<isNotNull prepend=" and " property="id"> id =  #id#</isNotNull>
+							<isNotNull prepend=" and " property="deiliverierId"> deiliverier_id =  #deiliverierId#</isNotNull>
+							<isNotNull prepend=" and " property="areaId"> area_id =  #areaId#</isNotNull>
+							<isNotNull prepend=" and " property="dr"> dr =  0</isNotNull>
+							<isNotNull prepend=" and " property="ts"> ts =  #ts#</isNotNull>
+					</dynamic>
+	</sql>
+
+	<select id="DeliveryAreaDO.query" parameterClass="DeliveryAreaQueryVO"
+		resultMap="DeliveryAreaResult">
+		select
+		<include refid="DeliveryAreaDO.allColumn" />
+		from t_tms_deliverier_area
+		<include refid="DeliveryAreaDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="DeliveryAreaDO.queryCount" parameterClass="DeliveryAreaQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_deliverier_area
+		<include refid="DeliveryAreaDO.queryCondition" />
+	</select>
+
+	<delete id="DeliveryAreaDO.delete" parameterClass="DeliveryAreaDO">delete from
+		t_tms_deliverier_area where id=#id#</delete>
+
+	<delete id="DeliveryAreaDO.deleteByID" parameterClass="java.lang.Long">delete from
+		t_tms_deliverier_area where id=#id#</delete>
+	
+	<update id="DeliveryAreaDO.del" parameterClass="DeliveryAreaDO">update 
+		t_tms_deliverier_area set dr = 1 where id=#id#</update>
+
+	<update id="DeliveryAreaDO.delByID" parameterClass="java.lang.Long">update 
+		t_tms_deliverier_area set dr = 1 where id=#id#</update>
+</sqlMap>

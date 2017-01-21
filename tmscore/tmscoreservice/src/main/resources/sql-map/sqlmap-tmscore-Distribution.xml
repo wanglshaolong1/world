@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="DistributionDO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionVO" />
+	<typeAlias alias="DistributionQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionQueryVO" />
+
+	<sql id="DistributionDO.allColumn">
+		id ,agency_id , pickup,order_id ,order_time ,area_id
+		,delivery_aging
+		,appoint_time,biz_statu,close_reason ,statu,rejected
+		,create_time
+		,delivered_time ,dr
+		,ts,pay_amount,user_name,user_address_id,user_address,user_phone
+	</sql>
+
+	<resultMap class="DistributionDO" id="DistributionResult">
+		<result property="id" column="id" />
+		<result property="agencyId" column="agency_id" />
+		<result property="orderId" column="order_id" />
+		<result property="orderTime" column="order_time" />
+		<result property="pickup" column="pickup" />
+		<result property="areaId" column="area_id" />
+		<result property="deliveryAging" column="delivery_aging" />
+		<result property="appointTime" column="appoint_time" />
+		<result property="bizStatu" column="biz_statu" />
+		<result property="closeReason" column="close_reason" />
+		<result property="statu" column="statu" />
+		<result property="rejected" column="rejected" />
+		<result property="createTime" column="create_time" />
+		<result property="deliveredTime" column="delivered_time" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+		<result property="payAmountReal" column="pay_amount" />
+		<result property="userName" column="user_name" />
+		<result property="userAddressId" column="user_address_id" />
+		<result property="userAddress" column="user_address" />
+		<result property="userPhone" column="user_phone" />
+	</resultMap>
+
+	<insert id="DistributionDO.add" parameterClass="DistributionDO">
+		insert into
+		t_tms_distribution(
+		agency_id , order_id , order_time
+		,pickup,
+		area_id , delivery_aging , appoint_time,biz_statu,close_reason
+		,
+		statu , create_time ,
+		delivered_time , dr,ts
+		,pay_amount,user_name,user_address_id,user_address,user_phone)values(
+		#agencyId# ,
+		#orderId# , #orderTime#
+		,#pickup# ,
+		#areaId# ,
+		#deliveryAging# ,
+		#appointTime# ,#bizStatu#,#closeReason#, #statu# ,
+		Now()
+		,
+		#deliveredTime# , 0,Now()
+		,#payAmountReal#,#userName#,#userAddressId#,#userAddress#,#userPhone#)
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="DistributionDO.update" parameterClass="DistributionDO">
+		update
+		t_tms_distribution
+		set
+		<dynamic prepend=" ">
+			<isNotNull prepend=" , " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="orderId"> order_id = #orderId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="orderTime"> order_time = #orderTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="pickup"> pickup = #pickup#
+			</isNotNull>
+			<isNotNull prepend=" , " property="areaId"> area_id = #areaId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="deliveryAging"> delivery_aging =
+				#deliveryAging#
+			</isNotNull>
+			<isNotNull prepend=" , " property="appointTime"> appoint_time =
+				#appointTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="bizStatu"> biz_statu = #bizStatu#
+			</isNotNull>
+			<isNotNull prepend=" , " property="closeReason"> close_reason =
+				#closeReason#
+			</isNotNull>
+			<isNotNull prepend=" , " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" , " property="rejected"> rejected =
+				#rejected#
+			</isNotNull>
+			<isNotNull prepend=" , " property="createTime"> create_time =
+				#createTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="deliveredTime">delivered_time =
+				#deliveredTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="payAmountReal"> pay_amount = #payAmountReal#
+			</isNotNull>
+			<isNotNull prepend=" , " property="userName"> user_name = #userName#
+			</isNotNull>
+			<isNotNull prepend=" , " property="userAddressId"> user_address_id =
+				#userAddressId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="userAddress"> user_address =
+				#userAddress#
+			</isNotNull>
+			<isNotNull prepend=" , " property="userPhone"> user_phone = #userPhone#
+			</isNotNull>
+		</dynamic>
+		,ts = Now()
+		where id = #id# and dr = 0
+	</update>
+
+	<update id="DistributionDO.reset" parameterClass="java.lang.Long">
+		update
+		t_tms_distribution
+		set
+		statu = 0
+		where id = #id# and statu = -1
+	</update>
+
+	<select id="DistributionDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="DistributionResult">
+		select
+		<include refid="DistributionDO.allColumn" />
+		from t_tms_distribution
+		where id=#id#
+	</select>
+
+	<sql id="DistributionDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="orderId"> order_id = #orderId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="orderTime"> order_time =
+				#orderTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="pickup"> pickup = #pickup#
+			</isNotNull>
+			<isNotNull prepend=" and " property="areaId"> area_id = #areaId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="deliveryAging"> delivery_aging =
+				#deliveryAging#
+			</isNotNull>
+			<isNotNull prepend=" and " property="appointTime"> appoint_time =
+				#appointTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" and " property="createTime"> create_time =
+				#createTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="deliveredTime"> delivered_time =
+				#deliveredTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="begin"> create_time > #begin#
+			</isNotNull>
+			<isNotNull prepend=" and " property="end">  #end# > create_time
+			</isNotNull>
+			<isNotNull prepend=" and " property="statuMax">statu <![CDATA[<=]]>
+				#statuMax#
+			</isNotNull>
+			<isNotNull prepend=" and " property="bizStatuNE">biz_statu is null or
+				biz_statu !=
+				#bizStatuNE#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="DistributionDO.query" parameterClass="DistributionQueryVO"
+		resultMap="DistributionResult">
+		select
+		<include refid="DistributionDO.allColumn" />
+		from t_tms_distribution
+		<include refid="DistributionDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+	
+
+	<select id="DistributionDO.queryCount" parameterClass="DistributionQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_distribution
+		<include refid="DistributionDO.queryCondition" />
+	</select>
+
+	<delete id="DistributionDO.delete" parameterClass="DistributionDO">delete from
+		t_tms_distribution where id=#id#
+	</delete>
+
+	<delete id="DistributionDO.deleteByID" parameterClass="java.lang.Long">delete
+		from
+		t_tms_distribution where id=#id#
+	</delete>
+
+	<update id="DistributionDO.del" parameterClass="DistributionDO">update
+		t_tms_distribution set dr = 1 where id=#id#
+	</update>
+
+	<update id="DistributionDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_distribution set dr = 1 where id=#id#
+	</update>
+</sqlMap>

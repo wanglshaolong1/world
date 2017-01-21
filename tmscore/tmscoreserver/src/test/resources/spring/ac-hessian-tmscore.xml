@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="byName">
+
+	<bean id="distributionDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>127.0.0.1:7001</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="distributionDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.tmscore.domain.client.itf.IDistributionDomainClient" />
+	</bean>
+
+	<bean id="waveDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>127.0.0.1:7001</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="waveDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.tmscore.domain.client.itf.IWaveDomainClient" />
+	</bean>
+
+	<bean id="pickDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>127.0.0.1:7001</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="pickDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.tmscore.domain.client.itf.IPickDomainClient" />
+	</bean>
+
+	<bean id="deliverDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>127.0.0.1:7001</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="deliverDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.tmscore.domain.client.itf.IDeliverDomainClient" />
+	</bean>
+
+	<bean id="distributionBoxDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>127.0.0.1:7001</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="distributionBoxDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.tmscore.domain.client.itf.IDistributionBoxDomainClient" />
+	</bean>
+
+	<bean id="pickingBasketDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>127.0.0.1:7001</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="pickingBasketDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.tmscore.domain.client.itf.IPickingBasketDomainClient" />
+	</bean>
+
+	<bean id="pickingWallPositionDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>127.0.0.1:7001</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="pickingWallPositionDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.tmscore.domain.client.itf.IPickingWallPositionDomainClient" />
+	</bean>
+</beans>

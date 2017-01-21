@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="WaveDetailDO" type="com.xianzaishi.wms.tmscore.vo.WaveDetailVO" />
+	<typeAlias alias="WaveDetailQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.WaveDetailQueryVO" />
+
+	<sql id="WaveDetailDO.allColumn">
+		id ,wave_id ,distribution_id ,dr ,ts
+	</sql>
+
+	<resultMap class="WaveDetailDO" id="WaveDetailResult">
+		<result property="id" column="id" />
+		<result property="waveId" column="wave_id" />
+		<result property="distributionId" column="distribution_id" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="WaveDetailDO.add" parameterClass="WaveDetailDO">
+		insert into
+		t_tms_wave_detail(
+		wave_id , distribution_id , dr , ts
+		)values(
+		#waveId# , #distributionId# , 0 , Now() )
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="WaveDetailDO.update" parameterClass="WaveDetailDO">
+		update
+		t_tms_wave_detail
+		set
+		wave_id = #waveId# , distribution_id =
+		#distributionId# , ts = Now() where id
+		= #id# and dr = 0
+	</update>
+
+	<select id="WaveDetailDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="WaveDetailResult">
+		select
+		<include refid="WaveDetailDO.allColumn" />
+		from t_tms_wave_detail
+		where id=#id#
+	</select>
+
+	<sql id="WaveDetailDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="waveId"> wave_id = #waveId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="distributionId"> distribution_id =
+				#distributionId#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and "  property="dr"> dr = 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="WaveDetailDO.query" parameterClass="WaveDetailQueryVO"
+		resultMap="WaveDetailResult">
+		select
+		<include refid="WaveDetailDO.allColumn" />
+		from t_tms_wave_detail
+		<include refid="WaveDetailDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="WaveDetailDO.queryCount" parameterClass="WaveDetailQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_wave_detail
+		<include refid="WaveDetailDO.queryCondition" />
+	</select>
+
+	<delete id="WaveDetailDO.delete" parameterClass="WaveDetailDO">delete from
+		t_tms_wave_detail where id=#id#
+	</delete>
+
+	<delete id="WaveDetailDO.deleteByID" parameterClass="java.lang.Long">delete from
+		t_tms_wave_detail where id=#id#
+	</delete>
+
+	<update id="WaveDetailDO.del" parameterClass="WaveDetailDO">update
+		t_tms_wave_detail set dr = 1 where id=#id#
+	</update>
+
+	<update id="WaveDetailDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_wave_detail set dr = 1 where id=#id#
+	</update>
+</sqlMap>

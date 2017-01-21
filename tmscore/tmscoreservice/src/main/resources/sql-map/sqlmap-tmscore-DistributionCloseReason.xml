@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="DistributionCloseReasonDO" type="com.xianzaishi.wms.tmscore.vo.DistributionCloseReasonVO" />
+	<typeAlias alias="DistributionCloseReasonQueryVO" type="com.xianzaishi.wms.tmscore.vo.DistributionCloseReasonQueryVO" />
+
+	<sql id="DistributionCloseReasonDO.allColumn">
+				id ,name ,dr ,ts 	</sql>
+
+	<resultMap class="DistributionCloseReasonDO" id="DistributionCloseReasonResult">
+		 <result property="id" column="id" />
+ <result property="name" column="name" />
+ <result property="dr" column="dr" />
+ <result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="DistributionCloseReasonDO.add" parameterClass="DistributionCloseReasonDO">
+		insert into
+		t_tms_distribution_close_reason(
+				name , dr , ts  		)values(
+				 #name# ,  0 ,  #ts#  		)
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="DistributionCloseReasonDO.update" parameterClass="DistributionCloseReasonDO">
+		update
+		t_tms_distribution_close_reason
+		set
+				name =  #name# , ts =  #ts#  		where id = #id#
+	</update>
+
+	<select id="DistributionCloseReasonDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="DistributionCloseReasonResult">
+		select
+		<include refid="DistributionCloseReasonDO.allColumn" />
+		from t_tms_distribution_close_reason
+		where id=#id#
+	</select>
+
+	<sql id="DistributionCloseReasonDO.queryCondition">
+		<dynamic prepend="where">
+							<isNotNull prepend=" and " property="id"> id =  #id#</isNotNull>
+							<isNotNull prepend=" and " property="name"> name =  #name#</isNotNull>
+							<isNotNull prepend=" and " property="dr"> dr =  0</isNotNull>
+							<isNotNull prepend=" and " property="ts"> ts =  #ts#</isNotNull>
+					</dynamic>
+	</sql>
+
+	<select id="DistributionCloseReasonDO.query" parameterClass="DistributionCloseReasonQueryVO"
+		resultMap="DistributionCloseReasonResult">
+		select
+		<include refid="DistributionCloseReasonDO.allColumn" />
+		from t_tms_distribution_close_reason
+		<include refid="DistributionCloseReasonDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="DistributionCloseReasonDO.queryCount" parameterClass="DistributionCloseReasonQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_distribution_close_reason
+		<include refid="DistributionCloseReasonDO.queryCondition" />
+	</select>
+
+	<delete id="DistributionCloseReasonDO.delete" parameterClass="DistributionCloseReasonDO">delete from
+		t_tms_distribution_close_reason where id=#id#</delete>
+
+	<delete id="DistributionCloseReasonDO.deleteByID" parameterClass="java.lang.Long">delete from
+		t_tms_distribution_close_reason where id=#id#</delete>
+	
+	<update id="DistributionCloseReasonDO.del" parameterClass="DistributionCloseReasonDO">update 
+		t_tms_distribution_close_reason set dr = 1 where id=#id#</update>
+
+	<update id="DistributionCloseReasonDO.delByID" parameterClass="java.lang.Long">update 
+		t_tms_distribution_close_reason set dr = 1 where id=#id#</update>
+</sqlMap>

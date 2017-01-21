@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="tmscoreserver">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="tmscoreclient-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/tmscoreclient/tmscoreclient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hiveclient-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/hiveclient/hiveclient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="wmscommonclient-0.0.2.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wmscommonclient/wmscommonclient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="tmscoreservice-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/tmscoreservice/tmscoreservice">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="trackclient-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/trackclient/trackclient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="wmscommonservice-0.0.2.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wmscommonservice/wmscommonservice">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="wmscommontest-0.0.2.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wmscommontest/wmscommontest">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="trade-client-1.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/trade-client/trade-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="tmscoreserver"/>
+        <property name="java-output-path" value="/tmscoreserver/target/classes"/>
+    </wb-module>
+</project-modules>

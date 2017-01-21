@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="PickingBasketStatuDO"
+		type="com.xianzaishi.wms.tmscore.vo.PickingBasketStatuVO" />
+	<typeAlias alias="PickingBasketStatuQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.PickingBasketStatuQueryVO" />
+
+	<sql id="PickingBasketStatuDO.allColumn">
+		id ,basket_id ,used ,statu ,start_time ,assignment_id ,dr
+		,ts
+	</sql>
+
+	<resultMap class="PickingBasketStatuDO" id="PickingBasketStatuResult">
+		<result property="id" column="id" />
+		<result property="basketId" column="basket_id" />
+		<result property="used" column="used" />
+		<result property="statu" column="statu" />
+		<result property="startTime" column="start_time" />
+		<result property="assignmentId" column="assignment_id" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="PickingBasketStatuDO.add" parameterClass="PickingBasketStatuDO">
+		insert into
+		t_tms_picking_basket_statu(
+		basket_id , used , statu ,
+		start_time , assignment_id , dr , ts )values(
+		#basketId# , #used# ,
+		#statu# , #startTime# , #assignmentId# , 0 ,
+		Now() )
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="PickingBasketStatuDO.update" parameterClass="PickingBasketStatuDO">
+		update
+		t_tms_picking_basket_statu
+		set
+		basket_id = #basketId# , used = #used# ,
+		statu = #statu# , start_time =
+		#startTime# , assignment_id =
+		#assignmentId# ,ts = Now() where id =
+		#id# and dr = 0
+	</update>
+
+	<select id="PickingBasketStatuDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="PickingBasketStatuResult">
+		select
+		<include refid="PickingBasketStatuDO.allColumn" />
+		from t_tms_picking_basket_statu
+		where id=#id#
+	</select>
+
+	<sql id="PickingBasketStatuDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="basketId"> basket_id = #basketId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="used"> used = #used#
+			</isNotNull>
+			<isNotNull prepend=" and " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" and " property="startTime"> start_time =
+				#startTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="assignmentId"> assignment_id =
+				#assignmentId#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and "  property="dr"> dr = 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="PickingBasketStatuDO.query" parameterClass="PickingBasketStatuQueryVO"
+		resultMap="PickingBasketStatuResult">
+		select
+		<include refid="PickingBasketStatuDO.allColumn" />
+		from t_tms_picking_basket_statu
+		<include refid="PickingBasketStatuDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="PickingBasketStatuDO.queryCount" parameterClass="PickingBasketStatuQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_picking_basket_statu
+		<include refid="PickingBasketStatuDO.queryCondition" />
+	</select>
+
+	<delete id="PickingBasketStatuDO.delete" parameterClass="PickingBasketStatuDO">delete
+		from
+		t_tms_picking_basket_statu where id=#id#
+	</delete>
+
+	<delete id="PickingBasketStatuDO.deleteByID" parameterClass="java.lang.Long">delete
+		from
+		t_tms_picking_basket_statu where id=#id#
+	</delete>
+
+	<update id="PickingBasketStatuDO.del" parameterClass="PickingBasketStatuDO">update
+		t_tms_picking_basket_statu set dr = 1 where id=#id#
+	</update>
+
+	<update id="PickingBasketStatuDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_picking_basket_statu set dr = 1 where id=#id#
+	</update>
+</sqlMap>

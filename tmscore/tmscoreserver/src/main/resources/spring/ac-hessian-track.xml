@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="byName">
+
+	<bean id="requisitionsDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="requisitionsDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.IRequisitionsDomainClient" />
+	</bean>
+
+	<bean id="outgoingDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="outgoingDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.IOutgoingDomainClient" />
+	</bean>
+
+	<bean id="spoilageDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="spoilageDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.ISpoilageDomainClient" />
+	</bean>
+
+	<bean id="stocktakingDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="stocktakingDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.IStocktakingDomainClient" />
+	</bean>
+
+	<bean id="storageDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="storageDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.IStorageDomainClient" />
+	</bean>
+
+	<bean id="transferDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="transferDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.ITransferDomainClient" />
+	</bean>
+
+	<bean id="orderStorageDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="orderStorageDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.IOrderStorageDomainClient" />
+	</bean>
+
+	<bean id="inspectionDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="inspectionDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.IInspectionDomainClient" />
+	</bean>
+
+	<bean id="bookingDeliveryDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="bookingDeliveryDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.IBookingDeliveryDomainClient" />
+	</bean>
+
+	<bean id="productDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="productDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.IProductDomainClient" />
+	</bean>
+
+	<bean id="tradeServiceShelvingDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="tradeServiceShelvingDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.ITradeServiceShelvingDomainClient" />
+	</bean>
+
+	<bean id="outgoingSaleDomainClient" class="com.xianzaishi.dorado.client.DoradoClientFactoryBean">
+		<property name="application" value="test" />
+		<property name="servers">
+			<list>
+				<value>${TRACK_HESSIAN}</value>
+			</list>
+		</property>
+		<property name="serviceUrl" value="outgoingSaleDomainClient" />
+		<property name="serviceInterface"
+			value="com.xianzaishi.wms.track.domain.client.itf.IOutgoingSaleDomainClient" />
+	</bean>
+
+</beans>

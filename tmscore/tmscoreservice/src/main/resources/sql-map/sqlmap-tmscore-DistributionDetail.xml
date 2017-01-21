@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="DistributionDetailDO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionDetailVO" />
+	<typeAlias alias="DistributionDetailQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionDetailQueryVO" />
+
+	<sql id="DistributionDetailDO.allColumn">
+		id ,distribution_id ,sku_id ,sku_name,all_no ,delived_no
+		,deliv_no,order_spec,delived_spec,deliv_spec,sale_unit,sale_unit_id,spec_unit,spec_unit_id,spec
+		,dr ,ts,price,sale_unit_type
+	</sql>
+
+	<resultMap class="DistributionDetailDO" id="DistributionDetailResult">
+		<result property="id" column="id" />
+		<result property="distributionId" column="distribution_id" />
+		<result property="skuId" column="sku_id" />
+		<result property="skuName" column="sku_name" />
+		<result property="allNoReal" column="all_no" />
+		<result property="delivedNoReal" column="delived_no" />
+		<result property="delivNoReal" column="deliv_no" />
+		<result property="orderSpec" column="order_spec" />
+		<result property="delivedSpec" column="delived_spec" />
+		<result property="delivSpec" column="deliv_spec" />
+		<result property="saleUnit" column="sale_unit" />
+		<result property="saleUnitId" column="sale_unit_id" />
+		<result property="specUnit" column="spec_unit" />
+		<result property="specUnitId" column="spec_unit_id" />
+		<result property="spec" column="spec" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+		<result property="priceReal" column="price" />
+		<result property="saleUnitType" column="sale_unit_type" />
+	</resultMap>
+
+	<insert id="DistributionDetailDO.add" parameterClass="DistributionDetailDO">
+		insert into
+		t_tms_distribution_detail(
+		distribution_id , sku_id
+		,sku_name, all_no
+		, delived_no , deliv_no
+		,order_spec,delived_spec,deliv_spec,sale_unit,sale_unit_id,spec_unit,spec_unit_id,spec,
+		dr , ts,price,sale_unit_type
+		)values(
+		#distributionId# ,
+		#skuId#,#skuName# ,
+		#allNoReal# ,
+		#delivedNoReal# ,
+		#delivNoReal#
+		,#orderSpec#,#delivedSpec#,#delivSpec#,#saleUnit#,#saleUnitId#,#specUnit#,#specUnitId#,#spec#,
+		0 ,
+		Now(),#priceReal#,#saleUnitType# )
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="DistributionDetailDO.update" parameterClass="DistributionDetailDO">
+		update
+		t_tms_distribution_detail
+		set
+		distribution_id = #distributionId# ,
+		sku_id = #skuId# ,sku_name = #skuName# , all_no = #allNoReal# ,
+		delived_no
+		= #delivedNoReal# ,
+		deliv_no = #delivNoReal# ,order_spec =
+		#orderSpec# ,
+		delived_spec
+		=
+		#delivedSpec# ,
+		deliv_spec = #delivSpec#
+		,sale_unit =
+		#saleUnit#, sale_unit_id =
+		#saleUnitId#
+		,spec_unit =
+		#specUnit#
+		,spec_unit_id =
+		#specUnitId#
+		, spec = #spec#
+		,ts =
+		Now(),price=#priceReal#,sale_unit_type = #saleUnitType#
+		where id = #id#
+		and
+		dr = 0
+	</update>
+
+	<select id="DistributionDetailDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="DistributionDetailResult">
+		select
+		<include refid="DistributionDetailDO.allColumn" />
+		from t_tms_distribution_detail
+		where id=#id#
+	</select>
+
+	<sql id="DistributionDetailDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="distributionId"> distribution_id =
+				#distributionId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="skuId"> sku_id = #skuId#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="DistributionDetailDO.query" parameterClass="DistributionDetailQueryVO"
+		resultMap="DistributionDetailResult">
+		select
+		<include refid="DistributionDetailDO.allColumn" />
+		from t_tms_distribution_detail
+		<include refid="DistributionDetailDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="DistributionDetailDO.queryCount" parameterClass="DistributionDetailQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_distribution_detail
+		<include refid="DistributionDetailDO.queryCondition" />
+	</select>
+
+	<delete id="DistributionDetailDO.delete" parameterClass="DistributionDetailDO">delete
+		from
+		t_tms_distribution_detail where id=#id#
+	</delete>
+
+	<delete id="DistributionDetailDO.deleteByID" parameterClass="java.lang.Long">delete
+		from
+		t_tms_distribution_detail where id=#id#
+	</delete>
+
+	<update id="DistributionDetailDO.del" parameterClass="DistributionDetailDO">update
+		t_tms_distribution_detail set dr = 1 where id=#id#
+	</update>
+
+	<update id="DistributionDetailDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_distribution_detail set dr = 1 where id=#id#
+	</update>
+</sqlMap>

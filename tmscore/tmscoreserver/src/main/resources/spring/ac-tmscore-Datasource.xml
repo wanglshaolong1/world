@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	 http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop.xsd
+     ">
+	<bean id="propertyConfigurer"
+		class="com.xianzaishi.wms.common.property.EncryptedPropertyPlaceHodlerConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/sys/sysconfig.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>${DB.DRIVER}</value>
+		</property>
+		<property name="url">
+			<value>${DB.URL}</value>
+		</property>
+		<property name="username">
+			<value>${DB.USERNAME}</value>
+		</property>
+		<property name="password">
+			<value>${DB.PASSWORD}</value>
+		</property>
+		<property name="maxActive" value="${DB.POOL.MAXACTIVE}" />
+		<property name="maxIdle" value="${DB.POOL.MAXIDLE}" />
+		<property name="maxWait" value="${DB.POOL.MAXWAIT}" />
+		<property name="defaultAutoCommit" value="true" />
+	</bean>
+
+	<bean id="simpleSqlMapClientFacotryBean" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:sql-map/sql-map.xml</value>
+		</property>
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+
+	<bean id="simpleSqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient">
+			<ref bean="simpleSqlMapClientFacotryBean" />
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="allServiceMethod"
+			expression="execution(* com.xianzaishi..*DomainServiceImpl.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allServiceMethod" />
+	</aop:config>
+
+</beans>

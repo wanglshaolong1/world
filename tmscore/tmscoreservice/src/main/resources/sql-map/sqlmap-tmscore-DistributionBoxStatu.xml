@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="DistributionBoxStatuDO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionBoxStatuVO" />
+	<typeAlias alias="DistributionBoxStatuQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionBoxStatuQueryVO" />
+
+	<sql id="DistributionBoxStatuDO.allColumn">
+		id ,box_id ,used ,start_time ,assignment_id ,dr ,ts
+	</sql>
+
+	<resultMap class="DistributionBoxStatuDO" id="DistributionBoxStatuResult">
+		<result property="id" column="id" />
+		<result property="boxId" column="box_id" />
+		<result property="used" column="used" />
+		<result property="startTime" column="start_time" />
+		<result property="assignmentId" column="assignment_id" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="DistributionBoxStatuDO.add" parameterClass="DistributionBoxStatuDO">
+		insert into
+		t_tms_distribution_box_statu(
+		box_id , used , start_time ,
+		assignment_id , dr , ts )values(
+		#boxId# , #used# , #startTime# ,
+		#assignmentId# , 0 , Now() )
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="DistributionBoxStatuDO.update" parameterClass="DistributionBoxStatuDO">
+		update
+		t_tms_distribution_box_statu
+		set
+		box_id = #boxId# , used = #used#
+		, start_time = #startTime# , assignment_id
+		= #assignmentId# ,ts = Now()
+		where id = #id# and dr = 0
+	</update>
+
+	<update id="DistributionBoxStatuDO.release" parameterClass="DistributionBoxStatuDO">
+		update
+		t_tms_distribution_box_statu
+		set used = 0
+		where box_id = #boxId#
+		and assignment_id
+		= #assignmentId# and dr = 0
+	</update>
+
+	<select id="DistributionBoxStatuDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="DistributionBoxStatuResult">
+		select
+		<include refid="DistributionBoxStatuDO.allColumn" />
+		from t_tms_distribution_box_statu
+		where id=#id#
+	</select>
+
+	<sql id="DistributionBoxStatuDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="boxId"> box_id = #boxId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="used"> used = #used#
+			</isNotNull>
+			<isNotNull prepend=" and " property="startTime"> start_time =
+				#startTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="assignmentId"> assignment_id =
+				#assignmentId#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="DistributionBoxStatuDO.query" parameterClass="DistributionBoxStatuQueryVO"
+		resultMap="DistributionBoxStatuResult">
+		select
+		<include refid="DistributionBoxStatuDO.allColumn" />
+		from t_tms_distribution_box_statu
+		<include refid="DistributionBoxStatuDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="DistributionBoxStatuDO.queryCount" parameterClass="DistributionBoxStatuQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_distribution_box_statu
+		<include refid="DistributionBoxStatuDO.queryCondition" />
+	</select>
+
+	<delete id="DistributionBoxStatuDO.delete" parameterClass="DistributionBoxStatuDO">delete
+		from
+		t_tms_distribution_box_statu where id=#id#
+	</delete>
+
+	<delete id="DistributionBoxStatuDO.deleteByID" parameterClass="java.lang.Long">delete
+		from
+		t_tms_distribution_box_statu where id=#id#
+	</delete>
+
+	<update id="DistributionBoxStatuDO.del" parameterClass="DistributionBoxStatuDO">update
+		t_tms_distribution_box_statu set dr = 1 where id=#id#
+	</update>
+
+	<update id="DistributionBoxStatuDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_distribution_box_statu set dr = 1 where id=#id#
+	</update>
+</sqlMap>

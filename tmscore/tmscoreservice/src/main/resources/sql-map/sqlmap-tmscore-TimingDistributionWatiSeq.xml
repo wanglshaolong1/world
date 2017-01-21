@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="TimingDistributionWatiSeqDO"
+		type="com.xianzaishi.wms.tmscore.vo.TimingDistributionWatiSeqVO" />
+	<typeAlias alias="TimingDistributionWatiSeqQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.TimingDistributionWatiSeqQueryVO" />
+
+	<sql id="TimingDistributionWatiSeqDO.allColumn">
+		id ,agency_id ,distribution_id ,delivery_time ,assign
+		,statu ,dr ,ts
+	</sql>
+
+	<resultMap class="TimingDistributionWatiSeqDO" id="TimingDistributionWatiSeqResult">
+		<result property="id" column="id" />
+		<result property="agencyId" column="agency_id" />
+		<result property="distributionId" column="distribution_id" />
+		<result property="deliveryTime" column="delivery_time" />
+		<result property="assign" column="assign" />
+		<result property="statu" column="statu" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="TimingDistributionWatiSeqDO.add" parameterClass="TimingDistributionWatiSeqDO">
+		insert into
+		t_tms_timing_distribution_wait_seq(
+		agency_id ,
+		distribution_id , delivery_time , assign , statu , dr , ts )values(
+		#agencyId# , #distributionId# , #deliveryTime# , #assign# , #statu# ,
+		0 , Now() )
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="TimingDistributionWatiSeqDO.update" parameterClass="TimingDistributionWatiSeqDO">
+		update
+		t_tms_timing_distribution_wait_seq
+		set
+		agency_id = #agencyId# ,
+		distribution_id = #distributionId# , delivery_time =
+		#deliveryTime# ,
+		assign = #assign# , statu = #statu# , ts = Now() where
+		id = #id# and dr
+		= 0
+	</update>
+
+	<update id="TimingDistributionWatiSeqDO.assign" parameterClass="TimingDistributionWatiSeqDO">
+		update
+		t_tms_timing_distribution_wait_seq
+		set
+		statu = 99 ,
+		assign =
+		#assign# where statu = 0 and delivery_time <![CDATA[ < ]]>
+		#deliveryTime# limit 10
+	</update>
+
+	<update id="TimingDistributionWatiSeqDO.assigntonormal"
+		parameterClass="TimingDistributionWatiSeqDO">
+		update
+		t_tms_timing_distribution_wait_seq
+		set
+		statu = 1
+		where statu = 99 and assign =
+		#assign#
+	</update>
+
+	<select id="TimingDistributionWatiSeqDO.getDOByID"
+		parameterClass="java.lang.Long" resultMap="TimingDistributionWatiSeqResult">
+		select
+		<include refid="TimingDistributionWatiSeqDO.allColumn" />
+		from t_tms_timing_distribution_wait_seq
+		where id=#id#
+	</select>
+
+	<sql id="TimingDistributionWatiSeqDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="distributionId"> distribution_id =
+				#distributionId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="deliveryTime"> delivery_time =
+				#deliveryTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="assign"> assign = #assign#
+			</isNotNull>
+			<isNotNull prepend=" and " property="statu"> statu = #statu#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="TimingDistributionWatiSeqDO.query" parameterClass="TimingDistributionWatiSeqQueryVO"
+		resultMap="TimingDistributionWatiSeqResult">
+		select
+		<include refid="TimingDistributionWatiSeqDO.allColumn" />
+		from t_tms_timing_distribution_wait_seq
+		<include refid="TimingDistributionWatiSeqDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="TimingDistributionWatiSeqDO.queryCount"
+		parameterClass="TimingDistributionWatiSeqQueryVO" resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_timing_distribution_wait_seq
+		<include refid="TimingDistributionWatiSeqDO.queryCondition" />
+	</select>
+
+	<delete id="TimingDistributionWatiSeqDO.delete" parameterClass="TimingDistributionWatiSeqDO">delete
+		from
+		t_tms_timing_distribution_wait_seq where id=#id#
+	</delete>
+
+	<delete id="TimingDistributionWatiSeqDO.deleteByID"
+		parameterClass="java.lang.Long">delete from
+		t_tms_timing_distribution_wait_seq where
+		id=#id#
+	</delete>
+
+	<delete id="TimingDistributionWatiSeqDO.deleteByDistributionID"
+		parameterClass="java.lang.Long">delete from
+		t_tms_timing_distribution_wait_seq where
+		distribution_id=#distributionId#
+	</delete>
+
+	<update id="TimingDistributionWatiSeqDO.del" parameterClass="TimingDistributionWatiSeqDO">update
+		t_tms_timing_distribution_wait_seq set dr = 1 where id=#id#
+	</update>
+
+	<update id="TimingDistributionWatiSeqDO.delByID" parameterClass="java.lang.Long">
+		update
+		t_tms_timing_distribution_wait_seq set dr = 1 where id=#id#
+	</update>
+</sqlMap>

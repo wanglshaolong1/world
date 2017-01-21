@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="PickDO" type="com.xianzaishi.wms.tmscore.vo.PickVO" />
+	<typeAlias alias="PickQueryVO" type="com.xianzaishi.wms.tmscore.vo.PickQueryVO" />
+
+	<sql id="PickDO.allColumn">
+		id ,agency_id ,wave_id ,area_id ,operator ,statu
+		,create_time
+		,finish_time ,dr ,ts
+	</sql>
+
+	<resultMap class="PickDO" id="PickResult">
+		<result property="id" column="id" />
+		<result property="agencyId" column="agency_id" />
+		<result property="waveId" column="wave_id" />
+		<result property="areaId" column="area_id" />
+		<result property="operator" column="operator" />
+		<result property="statu" column="statu" />
+		<result property="createTime" column="create_time" />
+		<result property="finishTime" column="finish_time" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="PickDO.add" parameterClass="PickDO">
+		insert into
+		t_tms_pick(
+		agency_id , wave_id , area_id , operator , statu
+		, create_time , finish_time ,
+		dr,ts )values(
+		#agencyId# , #waveId# ,
+		#areaId# , #operator# , #statu# , Now() ,
+		#finishTime# , 0,Now()
+		)
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="PickDO.update" parameterClass="PickDO">
+		update
+		t_tms_pick
+		set
+		<dynamic prepend=" ">
+			<isNotNull prepend=" , " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="waveId"> wave_id = #waveId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="areaId"> area_id = #areaId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="operator"> operator = #operator#
+			</isNotNull>
+			<isNotNull prepend=" , " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" , " property="createTime"> create_time =
+				#createTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="finishTime">finish_time =
+				#finishTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="dr"> dr = #dr#</isNotNull>
+		</dynamic>
+		,ts = Now()
+		where id = #id# and dr = 0
+	</update>
+
+	<update id="PickDO.assign" parameterClass="PickDO">
+		update
+		t_tms_pick
+		set
+		operator = #operator# , statu = #statu# where id = #id# and ts = #ts#
+		and dr = 0
+	</update>
+
+	<select id="PickDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="PickResult">
+		select
+		<include refid="PickDO.allColumn" />
+		from t_tms_pick
+		where id=#id#
+	</select>
+
+	<sql id="PickDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="waveId"> wave_id = #waveId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="areaId"> area_id = #areaId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="operator"> operator = #operator#
+			</isNotNull>
+			<isNotNull prepend=" and " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" and " property="createTime"> create_time =
+				#createTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="finishTime"> finish_time =
+				#finishTime#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and "  property="dr"> dr = 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="PickDO.query" parameterClass="PickQueryVO"
+		resultMap="PickResult">
+		select
+		<include refid="PickDO.allColumn" />
+		from t_tms_pick
+		<include refid="PickDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="PickDO.queryCount" parameterClass="PickQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_pick
+		<include refid="PickDO.queryCondition" />
+	</select>
+
+	<delete id="PickDO.delete" parameterClass="PickDO">delete from
+		t_tms_pick
+		where id=#id#
+	</delete>
+
+	<delete id="PickDO.deleteByID" parameterClass="java.lang.Long">delete from
+		t_tms_pick where id=#id#
+	</delete>
+
+	<update id="PickDO.del" parameterClass="PickDO">update
+		t_tms_pick set dr =
+		1 where id=#id#
+	</update>
+
+	<update id="PickDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_pick set
+		dr = 1 where id=#id#
+	</update>
+</sqlMap>

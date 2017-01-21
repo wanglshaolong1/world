@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="PickDetailDO" type="com.xianzaishi.wms.tmscore.vo.PickDetailVO" />
+	<typeAlias alias="PickDetailQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.PickDetailQueryVO" />
+
+	<sql id="PickDetailDO.allColumn">
+		id ,pick_id ,sku_id ,oos ,order_no
+		,picked_no,order_spec,picked_spec ,position_id
+		,basket_id,sale_unit,sale_unit_id,spec_unit,spec_unit_id,spec
+		,dr
+		,ts,sku_name,position_code,sale_unit_type
+	</sql>
+
+	<resultMap class="PickDetailDO" id="PickDetailResult">
+		<result property="id" column="id" />
+		<result property="pickId" column="pick_id" />
+		<result property="skuId" column="sku_id" />
+		<result property="oos" column="oos" />
+		<result property="orderNoReal" column="order_no" />
+		<result property="pickedNoReal" column="picked_no" />
+		<result property="orderSpec" column="order_spec" />
+		<result property="pickedSpec" column="picked_spec" />
+		<result property="positionId" column="position_id" />
+		<result property="basketId" column="basket_id" />
+		<result property="saleUnit" column="sale_unit" />
+		<result property="saleUnitId" column="sale_unit_id" />
+		<result property="specUnit" column="spec_unit" />
+		<result property="specUnitId" column="spec_unit_id" />
+		<result property="spec" column="spec" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+		<result property="skuName" column="sku_name" />
+		<result property="positionCode" column="position_code" />
+		<result property="saleUnitType" column="sale_unit_type" />
+	</resultMap>
+
+	<insert id="PickDetailDO.add" parameterClass="PickDetailDO">
+		insert into
+		t_tms_pick_detail(
+		pick_id , sku_id , oos , order_no ,
+		picked_no ,order_spec,picked_spec, position_id , basket_id
+		,sale_unit,sale_unit_id,spec_unit,spec_unit_id,spec, dr
+		,
+		ts,sku_name,position_code,sale_unit_type
+		)values(
+		#pickId# ,
+		#skuId# ,
+		#oos# , #orderNoReal#
+		, #pickedNoReal#
+		,#orderSpec#,#pickedSpec#,
+		#positionId# ,
+		#basketId#
+		,#saleUnit#,#saleUnitId#,#specUnit#,#specUnitId#,#spec#,
+		0 ,
+		Now()
+		,#skuName#,#positionCode#,#saleUnitType#)
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="PickDetailDO.update" parameterClass="PickDetailDO">
+		update
+		t_tms_pick_detail
+		set
+		<dynamic prepend=" ">
+			<isNotNull prepend=" , " property="pickId"> pick_id = #pickId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="skuId"> sku_id = #skuId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="oos"> oos = #oos#
+			</isNotNull>
+			<isNotNull prepend=" , " property="orderNoReal"> order_no = #orderNoReal#
+			</isNotNull>
+			<isNotNull prepend=" , " property="pickedNoReal"> picked_no =
+				#pickedNoReal#
+			</isNotNull>
+			<isNotNull prepend=" , " property="orderSpec"> order_spec = #orderSpec#
+			</isNotNull>
+			<isNotNull prepend=" , " property="pickedSpec"> picked_spec =
+				#pickedSpec#
+			</isNotNull>
+			<isNotNull prepend=" , " property="positionId"> position_id =
+				#positionId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="basketId"> basket_id = #basketId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="saleUnit"> sale_unit = #saleUnit#
+			</isNotNull>
+			<isNotNull prepend=" , " property="saleUnitId"> sale_unit_id =
+				#saleUnitId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="specUnit"> spec_unit = #specUnit#
+			</isNotNull>
+			<isNotNull prepend=" , " property="specUnitId"> spec_unit_id =
+				#specUnitId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="spec"> spec = #spec#
+			</isNotNull>
+			<isNotNull prepend=" , " property="skuName"> sku_name = #skuName#
+			</isNotNull>
+			<isNotNull prepend=" , " property="positionCode"> position_code =
+				#positionCode#
+			</isNotNull>
+			<isNotNull prepend=" , " property="saleUnitType"> sale_unit_type =
+				#saleUnitType#
+			</isNotNull>
+		</dynamic>
+		,ts = Now()
+		where id = #id# and dr = 0
+	</update>
+
+	<select id="PickDetailDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="PickDetailResult">
+		select
+		<include refid="PickDetailDO.allColumn" />
+		from t_tms_pick_detail
+		where id=#id#
+	</select>
+
+	<sql id="PickDetailDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="pickId"> pick_id = #pickId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="skuId"> sku_id = #skuId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="oos"> oos = #oos#
+			</isNotNull>
+			<isNotNull prepend=" and " property="positionId"> position_id =
+				#positionId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="basketId"> basket_id = #basketId#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="PickDetailDO.query" parameterClass="PickDetailQueryVO"
+		resultMap="PickDetailResult">
+		select
+		<include refid="PickDetailDO.allColumn" />
+		from t_tms_pick_detail
+		<include refid="PickDetailDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="PickDetailDO.queryCount" parameterClass="PickDetailQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_pick_detail
+		<include refid="PickDetailDO.queryCondition" />
+	</select>
+
+	<delete id="PickDetailDO.delete" parameterClass="PickDetailDO">delete from
+		t_tms_pick_detail where id=#id#
+	</delete>
+
+	<delete id="PickDetailDO.deleteByID" parameterClass="java.lang.Long">delete from
+		t_tms_pick_detail where id=#id#
+	</delete>
+
+	<update id="PickDetailDO.del" parameterClass="PickDetailDO">update
+		t_tms_pick_detail set dr = 1 where id=#id#
+	</update>
+
+	<update id="PickDetailDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_pick_detail set dr = 1 where id=#id#
+	</update>
+</sqlMap>

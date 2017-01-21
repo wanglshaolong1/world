@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN" "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+
+	<settings cacheModelsEnabled="false" enhancementEnabled="false"
+		lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000"
+		maxTransactions="3000" useStatementNamespaces="false" />
+
+	<sqlMap resource="sql-map/sqlmap-tmscore-DistributionCloseReason.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-Deliver.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-DeliveryArea.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-DeliverBox.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-DeliverDetail.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-DeliverDistribution.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-Distribution.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-DistributionBox.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-DistributionBoxStatu.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-DistributionDetail.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-DistributionWaitSeq.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-Pick.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-PickBasket.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-PickDetail.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-PickingBasket.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-PickingBasketStatu.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-PickingWall.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-PickingWallPosition.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-PickingWallPositionStatu.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-TimingDistributionWatiSeq.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-Wave.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-WaveDetail.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-AddressAreaMapping.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-DistributionArea.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-WavePool.xml" />
+	<sqlMap resource="sql-map/sqlmap-tmscore-WavePoolDetail.xml" />
+</sqlMapConfig>
+

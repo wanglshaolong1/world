@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="WaveDO" type="com.xianzaishi.wms.tmscore.vo.WaveVO" />
+	<typeAlias alias="WaveQueryVO" type="com.xianzaishi.wms.tmscore.vo.WaveQueryVO" />
+
+	<sql id="WaveDO.allColumn">
+		id ,pickup,area_id ,agency_id ,single ,statu ,operator
+		,create_time
+		,finish_time ,dr ,ts
+	</sql>
+
+	<resultMap class="WaveDO" id="WaveResult">
+		<result property="id" column="id" />
+		<result property="pickup" column="pickup" />
+		<result property="areaId" column="area_id" />
+		<result property="agencyId" column="agency_id" />
+		<result property="single" column="single" />
+		<result property="statu" column="statu" />
+		<result property="operator" column="operator" />
+		<result property="createTime" column="create_time" />
+		<result property="finishTime" column="finish_time" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="WaveDO.add" parameterClass="WaveDO">
+		insert into
+		t_tms_wave(pickup,
+		area_id , agency_id , single , statu ,
+		operator
+		, create_time , finish_time ,
+		dr ,ts)values(#pickup#,
+		#areaId# ,
+		#agencyId# ,
+		#single# , #statu# , #operator# , Now() ,
+		#finishTime# ,
+		0,Now()
+		)
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="WaveDO.update" parameterClass="WaveDO">
+		update
+		t_tms_wave
+		set
+		<dynamic prepend=" ">
+			<isNotNull prepend=" , " property="pickup"> pickup = #pickup#
+			</isNotNull>
+			<isNotNull prepend=" , " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="single">single = #single#
+			</isNotNull>
+			<isNotNull prepend=" , " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" , " property="areaId"> area_id = #areaId#
+			</isNotNull>
+			<isNotNull prepend=" , " property="operator"> operator =
+				#operator#
+			</isNotNull>
+			<isNotNull prepend=" , " property="createTime"> create_time =
+				#createTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="finishTime">finish_time =
+				#finishTime#
+			</isNotNull>
+			<isNotNull prepend=" , " property="dr"> dr = #dr#</isNotNull>
+		</dynamic>
+		,ts = Now()
+		where id = #id# and dr = 0
+	</update>
+
+	<update id="WaveDO.assign" parameterClass="WaveDO">
+		update
+		t_tms_wave
+		set
+		operator = #operator# , statu = #statu# where id = #id# and ts = #ts#
+	</update>
+
+	<update id="WaveDO.releaseWaveTask" parameterClass="java.lang.Long">
+		update
+		t_tms_wave
+		set
+		operator = null , statu = 1 where id = #waveID# and dr =
+		0
+	</update>
+
+	<select id="WaveDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="WaveResult">
+		select
+		<include refid="WaveDO.allColumn" />
+		from t_tms_wave
+		where id=#id#
+	</select>
+
+	<sql id="WaveDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="pickup"> pickup = #pickup#
+			</isNotNull>
+			<isNotNull prepend=" and " property="areaId"> area_id = #areaId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="single"> single = #single#
+			</isNotNull>
+			<isNotNull prepend=" and " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" and " property="operator"> operator = #operator#
+			</isNotNull>
+			<isNotNull prepend=" and " property="createTime"> create_time =
+				#createTime#
+			</isNotNull>
+			<isNotNull prepend=" and " property="finishTime"> finish_time =
+				#finishTime#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="WaveDO.query" parameterClass="WaveQueryVO"
+		resultMap="WaveResult">
+		select
+		<include refid="WaveDO.allColumn" />
+		from t_tms_wave
+		<include refid="WaveDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="WaveDO.queryCount" parameterClass="WaveQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_wave
+		<include refid="WaveDO.queryCondition" />
+	</select>
+
+	<delete id="WaveDO.delete" parameterClass="WaveDO">delete from
+		t_tms_wave
+		where id=#id#
+	</delete>
+
+	<delete id="WaveDO.deleteByID" parameterClass="java.lang.Long">delete from
+		t_tms_wave where id=#id#
+	</delete>
+
+	<update id="WaveDO.del" parameterClass="WaveDO">update
+		t_tms_wave set dr =
+		1 where id=#id#
+	</update>
+
+	<update id="WaveDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_wave set
+		dr = 1 where id=#id#
+	</update>
+</sqlMap>

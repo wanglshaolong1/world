@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="DistributionAreaDO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionAreaVO" />
+	<typeAlias alias="DistributionAreaQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionAreaQueryVO" />
+
+	<sql id="DistributionAreaDO.allColumn">
+		id ,name ,agency,maxlng,minlng,maxlat,minlat ,dr ,ts
+	</sql>
+
+	<resultMap class="DistributionAreaDO" id="DistributionAreaResult">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="agency" column="agency" />
+		<result property="maxlng" column="maxlng" />
+		<result property="minlng" column="minlng" />
+		<result property="maxlat" column="maxlat" />
+		<result property="minlat" column="minlat" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="DistributionAreaDO.add" parameterClass="DistributionAreaDO">
+		insert into
+		t_tms_distribution_area(
+		name , agency
+		,maxlng,minlng,maxlat,minlat, dr , ts )values(
+		#name# , #agency#
+		,#maxlng#,#minlng#,#maxlat#,#minlat#, 0 , Now() )
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="DistributionAreaDO.update" parameterClass="DistributionAreaDO">
+		update
+		t_tms_distribution_area
+		set
+		name = #name# , agency = #agency# ,maxlng=
+		#maxlng#,minlng= #minlng#,maxlat= #maxlat#,minlat= #minlat#,ts =
+		Now()
+		where id = #id# and dr = 0
+	</update>
+
+	<select id="DistributionAreaDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="DistributionAreaResult">
+		select
+		<include refid="DistributionAreaDO.allColumn" />
+		from t_tms_distribution_area
+		where id=#id#
+	</select>
+
+	<sql id="DistributionAreaDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="name"> name = #name#
+			</isNotNull>
+			<isNotNull prepend=" and " property="agency"> agency = #agency#
+			</isNotNull>
+			<isNotNull prepend=" and " property="maxlng"> maxlng= #maxlng#
+			</isNotNull>
+			<isNotNull prepend=" and " property="minlng"> minlng= #minlng#
+			</isNotNull>
+			<isNotNull prepend=" and " property="maxlat"> maxlat= #maxlat#
+			</isNotNull>
+			<isNotNull prepend=" and " property="minlat"> minlat= #minlat#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="DistributionAreaDO.query" parameterClass="DistributionAreaQueryVO"
+		resultMap="DistributionAreaResult">
+		select
+		<include refid="DistributionAreaDO.allColumn" />
+		from t_tms_distribution_area
+		<include refid="DistributionAreaDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="DistributionAreaDO.getArea" parameterClass="DistributionAreaQueryVO"
+		resultMap="DistributionAreaResult">
+		select
+		<include refid="DistributionAreaDO.allColumn" />
+		from t_tms_distribution_area
+		where maxlng >=
+		#lng# and minlng <![CDATA[<=]]>
+		#lng#
+		and maxlat >= #lat# and minlat <![CDATA[<=]]>
+		#lat# and dr = 0
+		limit 1
+	</select>
+
+	<select id="DistributionAreaDO.queryCount" parameterClass="DistributionAreaQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_distribution_area
+		<include refid="DistributionAreaDO.queryCondition" />
+	</select>
+
+	<delete id="DistributionAreaDO.delete" parameterClass="DistributionAreaDO">delete
+		from
+		t_tms_distribution_area where id=#id#
+	</delete>
+
+	<delete id="DistributionAreaDO.deleteByID" parameterClass="java.lang.Long">delete
+		from
+		t_tms_distribution_area where id=#id#
+	</delete>
+
+	<update id="DistributionAreaDO.del" parameterClass="DistributionAreaDO">update
+		t_tms_distribution_area set dr = 1 where id=#id#
+	</update>
+
+	<update id="DistributionAreaDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_distribution_area set dr = 1 where id=#id#
+	</update>
+</sqlMap>

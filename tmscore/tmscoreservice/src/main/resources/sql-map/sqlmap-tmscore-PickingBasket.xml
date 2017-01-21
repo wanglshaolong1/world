@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="PickingBasketDO"
+		type="com.xianzaishi.wms.tmscore.vo.PickingBasketVO" />
+	<typeAlias alias="PickingBasketQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.PickingBasketQueryVO" />
+
+	<sql id="PickingBasketDO.allColumn">
+		id ,agency_id ,code ,barcode ,area_id ,dr ,ts
+	</sql>
+
+	<resultMap class="PickingBasketDO" id="PickingBasketResult">
+		<result property="id" column="id" />
+		<result property="agencyId" column="agency_id" />
+		<result property="code" column="code" />
+		<result property="barcode" column="barcode" />
+		<result property="areaId" column="area_id" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="PickingBasketDO.add" parameterClass="PickingBasketDO">
+		insert into
+		t_tms_picking_basket(
+		agency_id , code , barcode , area_id ,
+		dr , ts )values(
+		#agencyId# , #code# , #barcode# , #areaId# , 0 , Now()
+		)
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="PickingBasketDO.update" parameterClass="PickingBasketDO">
+		update
+		t_tms_picking_basket
+		set
+		agency_id = #agencyId# , code = #code# ,
+		barcode = #barcode# , area_id =
+		#areaId# ,ts = Now() where id = #id#
+		and dr = 0
+	</update>
+
+	<select id="PickingBasketDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="PickingBasketResult">
+		select
+		<include refid="PickingBasketDO.allColumn" />
+		from t_tms_picking_basket
+		where id=#id#
+	</select>
+
+	<sql id="PickingBasketDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="code"> code = #code#
+			</isNotNull>
+			<isNotNull prepend=" and " property="barcode"> barcode = #barcode#
+			</isNotNull>
+			<isNotNull prepend=" and " property="areaId"> area_id = #areaId#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and "  property="dr"> dr = 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="PickingBasketDO.query" parameterClass="PickingBasketQueryVO"
+		resultMap="PickingBasketResult">
+		select
+		<include refid="PickingBasketDO.allColumn" />
+		from t_tms_picking_basket
+		<include refid="PickingBasketDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="PickingBasketDO.queryCount" parameterClass="PickingBasketQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_picking_basket
+		<include refid="PickingBasketDO.queryCondition" />
+	</select>
+
+	<delete id="PickingBasketDO.delete" parameterClass="PickingBasketDO">delete from
+		t_tms_picking_basket where id=#id#
+	</delete>
+
+	<delete id="PickingBasketDO.deleteByID" parameterClass="java.lang.Long">delete
+		from
+		t_tms_picking_basket where id=#id#
+	</delete>
+
+	<update id="PickingBasketDO.del" parameterClass="PickingBasketDO">update
+		t_tms_picking_basket set dr = 1 where id=#id#
+	</update>
+
+	<update id="PickingBasketDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_picking_basket set dr = 1 where id=#id#
+	</update>
+</sqlMap>

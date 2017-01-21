@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="DistributionWaitSeqDO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionWaitSeqVO" />
+	<typeAlias alias="DistributionWaitSeqQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.DistributionWaitSeqQueryVO" />
+
+	<sql id="DistributionWaitSeqDO.allColumn">
+		id ,agency_id ,distribution_id ,statu ,assign ,dr ,ts
+	</sql>
+
+	<resultMap class="DistributionWaitSeqDO" id="DistributionWaitSeqResult">
+		<result property="id" column="id" />
+		<result property="agencyId" column="agency_id" />
+		<result property="distributionId" column="distribution_id" />
+		<result property="statu" column="statu" />
+		<result property="assign" column="assign" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="DistributionWaitSeqDO.add" parameterClass="DistributionWaitSeqDO">
+		insert into
+		t_tms_distribution_wait_seq(
+		agency_id , distribution_id ,
+		statu , assign , dr , ts )values(
+		#agencyId# , #distributionId# ,
+		#statu# , #assign# , 0 , Now() )
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="DistributionWaitSeqDO.update" parameterClass="DistributionWaitSeqDO">
+		update
+		t_tms_distribution_wait_seq
+		set
+		agency_id = #agencyId# , distribution_id
+		= #distributionId# , statu = #statu# ,
+		assign = #assign# ,ts = Now()
+		where id = #id# and dr = 0
+	</update>
+
+	<update id="DistributionWaitSeqDO.assign" parameterClass="DistributionWaitSeqDO">
+		update
+		t_tms_distribution_wait_seq
+		set
+		statu = 99 ,
+		assign =
+		#assign# where
+		statu
+		= 0 limit 10
+	</update>
+
+	<update id="DistributionWaitSeqDO.assigntonormal"
+		parameterClass="DistributionWaitSeqDO">
+		update
+		t_tms_distribution_wait_seq
+		set
+		statu = 1
+		where
+		statu = 99 and assign =
+		#assign#
+	</update>
+
+	<select id="DistributionWaitSeqDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="DistributionWaitSeqResult">
+		select
+		<include refid="DistributionWaitSeqDO.allColumn" />
+		from t_tms_distribution_wait_seq
+		where id=#id#
+	</select>
+
+	<sql id="DistributionWaitSeqDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="agencyId"> agency_id = #agencyId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="distributionId"> distribution_id =
+				#distributionId#
+			</isNotNull>
+			<isNotNull prepend=" and " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" and " property="assign"> assign = #assign#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="DistributionWaitSeqDO.query" parameterClass="DistributionWaitSeqQueryVO"
+		resultMap="DistributionWaitSeqResult">
+		select
+		<include refid="DistributionWaitSeqDO.allColumn" />
+		from t_tms_distribution_wait_seq
+		<include refid="DistributionWaitSeqDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="DistributionWaitSeqDO.queryCount" parameterClass="DistributionWaitSeqQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_distribution_wait_seq
+		<include refid="DistributionWaitSeqDO.queryCondition" />
+	</select>
+
+	<delete id="DistributionWaitSeqDO.delete" parameterClass="DistributionWaitSeqDO">delete
+		from
+		t_tms_distribution_wait_seq where id=#id#
+	</delete>
+
+	<delete id="DistributionWaitSeqDO.deleteByID" parameterClass="java.lang.Long">delete
+		from
+		t_tms_distribution_wait_seq where id=#id#
+	</delete>
+
+	<delete id="DistributionWaitSeqDO.deleteByDistributionID"
+		parameterClass="java.lang.Long">delete
+		from
+		t_tms_distribution_wait_seq where
+		distribution_id=#distributionId#
+	</delete>
+
+	<update id="DistributionWaitSeqDO.del" parameterClass="DistributionWaitSeqDO">update
+		t_tms_distribution_wait_seq set dr = 1 where id=#id#
+	</update>
+
+	<update id="DistributionWaitSeqDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_distribution_wait_seq set dr = 1 where id=#id#
+	</update>
+</sqlMap>

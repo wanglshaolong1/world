@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="GB2312" ?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<typeAlias alias="WavePoolDO" type="com.xianzaishi.wms.tmscore.vo.WavePoolVO" />
+	<typeAlias alias="WavePoolQueryVO"
+		type="com.xianzaishi.wms.tmscore.vo.WavePoolQueryVO" />
+
+	<sql id="WavePoolDO.allColumn">
+		id ,pool_key ,create_time,statu ,dr ,ts
+	</sql>
+
+	<resultMap class="WavePoolDO" id="WavePoolResult">
+		<result property="id" column="id" />
+		<result property="key" column="pool_key" />
+		<result property="statu" column="statu" />
+		<result property="createTime" column="create_time" />
+		<result property="dr" column="dr" />
+		<result property="ts" column="ts" />
+	</resultMap>
+
+	<insert id="WavePoolDO.add" parameterClass="WavePoolDO">
+		insert into
+		t_tms_wave_pool(
+		pool_key , statu,create_time , dr,ts
+		)values(
+		#key#
+		, #statu# , #createTime# , 0,Now() )
+		<selectKey resultClass="long" keyProperty="id">
+			SELECT
+			LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="WavePoolDO.update" parameterClass="WavePoolDO">
+		update
+		t_tms_wave_pool
+		set
+		pool_key = #key# , statu = #statu# , create_time =
+		#createTime# , ts
+		= Now() where id = #id# and dr = 0
+	</update>
+
+	<select id="WavePoolDO.getDOByID" parameterClass="java.lang.Long"
+		resultMap="WavePoolResult">
+		select
+		<include refid="WavePoolDO.allColumn" />
+		from t_tms_wave_pool
+		where id=#id#
+	</select>
+
+	<sql id="WavePoolDO.queryCondition">
+		<dynamic prepend="where">
+			<isNotNull prepend=" and " property="id"> id = #id#</isNotNull>
+			<isNotNull prepend=" and " property="key"> pool_key = #key#
+			</isNotNull>
+			<isNotNull prepend=" and " property="statu"> statu = #statu#
+			</isNotNull>
+			<isNotNull prepend=" and " property="createTime">
+				create_time <![CDATA[ < ]]>
+				#createTime#
+			</isNotNull>
+			<isPropertyAvailable prepend=" and " property="dr"> dr
+				= 0
+			</isPropertyAvailable>
+			<isNotNull prepend=" and " property="ts"> ts = #ts#</isNotNull>
+		</dynamic>
+	</sql>
+
+	<select id="WavePoolDO.query" parameterClass="WavePoolQueryVO"
+		resultMap="WavePoolResult">
+		select
+		<include refid="WavePoolDO.allColumn" />
+		from t_tms_wave_pool
+		<include refid="WavePoolDO.queryCondition" />
+		limit #startRow# , #size#
+	</select>
+
+	<select id="WavePoolDO.queryCount" parameterClass="WavePoolQueryVO"
+		resultClass="java.lang.Integer">
+		select count(*)
+		from t_tms_wave_pool
+		<include refid="WavePoolDO.queryCondition" />
+	</select>
+
+	<delete id="WavePoolDO.delete" parameterClass="WavePoolDO">delete from
+		t_tms_wave_pool where id=#id#
+	</delete>
+
+	<delete id="WavePoolDO.deleteByID" parameterClass="java.lang.Long">delete from
+		t_tms_wave_pool where id=#id#
+	</delete>
+
+	<update id="WavePoolDO.del" parameterClass="WavePoolDO">update
+		t_tms_wave_pool set dr = 1 where id=#id#
+	</update>
+
+	<update id="WavePoolDO.delByID" parameterClass="java.lang.Long">update
+		t_tms_wave_pool set dr = 1 where id=#id#
+	</update>
+</sqlMap>
