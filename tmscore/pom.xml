@@ -11,8 +11,8 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ibatis.sql.map.version>2.3.0</ibatis.sql.map.version>
+		<project.build.sourceEncoding>UTF-8</prssfdsfoject.build.sourceEncoding>
+		<ibatis.sql.map.version>2.3.0</ibatis.sqldfsdf.map.version>
 		<java.source.version>1.7</java.source.version>
 		<java.target.version>1.7</java.target.version>
 		<spring.version>4.1.6.RELEASE</spring.version>
